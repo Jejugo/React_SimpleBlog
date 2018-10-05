@@ -51,6 +51,11 @@ class App extends Component {
     });
   }
 
+  clearQuery = (e) => {
+    e.target.value = ''
+    this.updateQuery(e);
+  }
+
   render() {
     const {query, contacts} = this.state
 
@@ -59,13 +64,11 @@ class App extends Component {
       c.name.toLowerCase().includes(query.toLowerCase())
     ));
 
-    console.log("showing contacts are...");
-    console.log(showingContacts);
 
     return (
       <div>
         <SearchBar contacts={this.state.contacts} updateQuery={this.updateQuery} query={this.state.query}></SearchBar>
-        <ListContacts contacts={showingContacts} deleteContact={this.deleteContact}></ListContacts>
+        <ListContacts showingContacts={showingContacts} deleteContact={this.deleteContact} contacts={this.state.contacts} clearQuery={this.clearQuery}></ListContacts>
       </div>
     );
   }

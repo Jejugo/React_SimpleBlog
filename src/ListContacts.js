@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ListContacts = (props) => {
+const ListshowingContacts = (props) => {
   console.log(props);
-  const{contacts} = props
-  console.log("the contacts are!!");
-  console.log(contacts);
-  const getlist = contacts.map(contact =>{
+  const{showingContacts, contacts, clearQuery} = props
+  console.log("the showingContacts are!!");
+  console.log(showingContacts);
+  const getlist = showingContacts.map(contact =>{
     return (
       <div key={contact.id}>
         <ol>
@@ -26,11 +26,18 @@ const ListContacts = (props) => {
   });
 
   return (
-    <ol className="contact-list">
-      {getlist}
-    </ol>
+    <div>
+      {contacts.length !== showingContacts.length &&(
+        <div>
+          <p className="contacts-length" onClick={(e) => clearQuery(e)}>Showing {showingContacts.length} of {contacts.length}. click to reset!</p>
+        </div>
+      )}
+      <ol className="contact-list">
+        {getlist}
+      </ol>
+    </div>
   );
 
 }
   
-  export default ListContacts;
+  export default ListshowingContacts;

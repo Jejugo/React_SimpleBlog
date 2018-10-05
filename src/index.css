@@ -112,7 +112,7 @@ body, .app {
 
 .showing-contacts {
   text-align: center;
-  margin: 20px 0;
+  margin-top: 0%;
 }
 .showing-contacts button {
   color: blue;
@@ -122,9 +122,13 @@ body, .app {
   font-size: inherit;
 }
 
+.contacts-length{
+  margin: 5% 30%;
+}
+
 .contact-list {
   width: 100%;
-  margin-top: 15%;
+  margin-top: 5%;
   padding: 0;
   list-style-type: none;
 }
