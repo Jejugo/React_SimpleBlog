@@ -2,33 +2,26 @@ import React, { Component } from 'react';
 import ListContacts from './ListContacts'
 import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
+import CreateContact from './CreateContact'
+import * as ContactsAPI from '../src/utils/ContactsAPI'
+import {Route} from 'react-router-dom'
 
 class App extends Component {
 
   state = {
-    contacts: [
-      {
-        "id": "karen",
-        "name": "Karen Isgrigg",
-        "handle": "@karen_isgrigg",
-        "avatarURL": "http://localhost:5000/karen.jpg"
-      },
-      {
-        "id": "richard",
-        "name": "Richard Kalehoff",
-        "handle": "@richardkalehoff",
-        "avatarURL": "http://localhost:5000/richard.jpg"
-      },
-      {
-        "id": "tyler",
-        "name": "Tyler McGinnis",
-        "handle": "@tylermcginnis",
-        "avatarURL": "http://localhost:5000/tyler.jpg"
-      }
-     ],
+    contacts: [],
+    query: '',
 
-     query: ''
+  }
 
+  componentDidMount() {
+    ContactsAPI.getAll()
+      .then(contacts => {
+        this.setState(() =>({
+          contacts
+        }));
+      });
+    
   }
 
   deleteContact = (contact) => {
@@ -37,13 +30,18 @@ class App extends Component {
         return c.id !== contact.id;
       })
     });
-  }
-  
-  componentDidUpdate() {
-    console.log("renderizando...");
-    console.log(this.state);
+
+    ContactsAPI.remove(contact)
   }
 
+  addContact = (contact) => {
+    ContactsAPI.create(contact)
+    .then((contact) => {
+      this.setState((previousState) => ({
+        contacts: previousState.contacts.concat([contact])
+      }));
+    });
+  }
 
   updateQuery = (e) =>{
     this.setState({
@@ -57,7 +55,7 @@ class App extends Component {
   }
 
   render() {
-    const {query, contacts} = this.state
+    const {query, contacts, screen} = this.state
 
     const showingContacts = query === ''
     ? contacts : contacts.filter(c =>(
@@ -67,8 +65,19 @@ class App extends Component {
 
     return (
       <div>
-        <SearchBar contacts={this.state.contacts} updateQuery={this.updateQuery} query={this.state.query}></SearchBar>
-        <ListContacts showingContacts={showingContacts} deleteContact={this.deleteContact} contacts={this.state.contacts} clearQuery={this.clearQuery}></ListContacts>
+        <Route exact path='/' render={() => (
+          <div>
+          <SearchBar contacts={this.state.contacts} updateQuery={this.updateQuery} query={this.state.query}></SearchBar>
+          <ListContacts showingContacts={showingContacts} deleteContact={this.deleteContact} contacts={this.state.contacts} clearQuery={this.clearQuery}></ListContacts>
+        </div>
+        )}></Route>
+        <Route path='/create' render={({history}) => (
+          <CreateContact addContact={(contact) => {
+            this.addContact(contact)
+            history.push('/')
+          }}></CreateContact>
+        )}>
+        </Route>
       </div>
     );
   }

@@ -25,6 +25,9 @@ const ListshowingContacts = (props) => {
     )
   });
 
+  console.log("O objeto eh:");
+  console.log(typeof getlist);
+
   return (
     <div>
       {contacts.length !== showingContacts.length &&(

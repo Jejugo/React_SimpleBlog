@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ListContacts from './ListContacts'
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom'
 
 const SearchBar = (props) => {
-  const {contacts, updateQuery, query} = props;
+  const {updateQuery, query} = props;
   
   return (
     <div className="list-contacts-top">
@@ -11,6 +12,7 @@ const SearchBar = (props) => {
         value={query}
         onChange={(e) => updateQuery(e)}>
         </input>
+        <Link to="/create" className='add-contact'></Link>
     </div>
   )
 }
